@@ -1,0 +1,22 @@
+<%-include ("header")-%>
+  <div class="box" id="heading">
+    <h1><%= listTitle %> </h1>
+  </div>
+
+  <div class="box">
+    <% tasks.forEach(task=> { %>
+      <div class="item">
+        <input type="checkbox" />
+        <p>
+          <%=task %>
+        </p>
+      </div>
+      <% }) %>
+
+        <form action="/" method="post">
+          <input type="text" name="task" id="Task" placeholder="New Item" autocomplete="off" />
+          <button type="submit" name="list" value="<%=listTitle%>">+</button>
+        </form>
+  </div>
+
+  <%-include ("footer")-%>
