@@ -5,9 +5,7 @@ const _ = require('lodash')
 
 const path = require('path');
 const mongoose = require('mongoose')
-// const createDB = require('./mongodb');
 
-const date = require(path.resolve('./date.js'));
 
 const app = express();
 
@@ -15,8 +13,6 @@ app.set('view engine', 'ejs');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static('public'))
-// const tasks = ["Buy Food", "Cook Food", "Eat Food"];
-// const workItems = [];
 
 
 async function createAndConnect(schema = { name: String, tasks: [new mongoose.Schema({ name: String })] }, collection = 'Item') {
@@ -40,15 +36,6 @@ async function readItems(toDoName) {
 
 
 app.get('/', (req, res) => {
-    // let day = new Date();
-    // if (day.getDay() === 6 || day.getDay() === 0) {
-    //     day = 'WeekDay'
-    //     // res.sendFile(path.resolve('./index.html'));
-    // } else {
-    //     day = 'WorkDay'
-    //     // res.sendFile(path.resolve('./index.html'));
-    // }
-    // const day = date.getDay();
     readItems('General').then(async (tasks) => {
         if (tasks.length === 0) {
             const defaultTodos = [{ name: 'Buy Food' }, { name: 'Cook Food' }, { name: 'Eat Food' }]
@@ -85,10 +72,6 @@ app.post('/', (req, res) => {
     if (!task) {
         res.send("Don't Try to be Smart. Please")
     }
-    // if (req.body.list === 'Work List') {
-    //     workItems.push(task);
-    //     res.redirect('/work');
-    // }
     createAndConnect().then(async Item => {
         const doc = await Item.findOne({ name: title })
         doc.tasks.push({ name: task })
@@ -103,22 +86,11 @@ app.post('/delete', async (req, res) => {
     const Item = await createAndConnect();
     const result = await Item.findOneAndUpdate({ name: title }, { $pull: { tasks: { _id: req.body.checkbox } } })
     title === 'General' ? res.redirect('/') : res.redirect(`/${title}`)
-    // createAndConnect().then(async (Item) => {
-    //     await Item.deleteOne({ _id: req.body.checkbox })
-    //     res.redirect('/')
-    // })
 })
 app.get("/about", (req, res) => {
     res.render('about');
 })
 
-
-// app.post('/work', (req, res) => {
-//     let newWork = req.body.task;
-//     if (!newWork) {
-//         res.send("Don't Try to be Smart. Please")
-//     }
-// })
 
 app.listen(3000, () => {
     console.log('listing server')
