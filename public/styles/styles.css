@@ -1,6 +1,5 @@
 @font-face {
   font-family: "helvetica neue";
-
   src: url("../fonts/Helvetica Neue LTW0697BlkCnObl/Helvetica Neue LTW0697BlkCnObl.ttf")
   format('truetype');
 }
@@ -57,7 +56,7 @@ p {
   color: #00204a;
 }
 
-form {
+form.userInputForm {
   text-align: center;
   margin-left: 20px;
 }
